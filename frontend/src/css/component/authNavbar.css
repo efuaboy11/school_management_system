@@ -1,0 +1,6 @@
+.auth-nav{
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+    width: 100%;
+}
+

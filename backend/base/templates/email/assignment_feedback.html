@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Assignment Feedback</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #4A249D;
+      color: #ffffff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .content {
+      padding: 30px;
+      color: #333333;
+    }
+
+    .content p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 15px 0;
+    }
+
+    .highlight {
+      background-color: #f2f0fc;
+      padding: 10px 15px;
+      border-left: 5px solid #4A249D;
+      border-radius: 4px;
+      font-weight: bold;
+      color: #4A249D;
+    }
+
+    .footer {
+      background-color: #f0f0f5;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666666;
+    }
+
+    .footer small {
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Assignment Feedback</h1>
+    </div>
+
+    <div class="content">
+      <p>Dear <strong>{{ student_name }}</strong>,</p>
+
+      <p>Thank you for submitting your assignment. Here is your result:</p>
+
+      <p class="highlight">Grade: {{ grade }}</p>
+
+      <p><strong>Instructor Feedback:</strong></p>
+      <p>{{ feedback|linebreaksbr }}</p>
+
+      <p>Keep up the good work!</p>
+
+      <p>Best regards,<br>Your Instructor</p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; {{ year }} Your Institution. All rights reserved.</p>
+    </div>
+  </div>
+
+</body>
+</html>

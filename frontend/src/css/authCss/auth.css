@@ -1,0 +1,19 @@
+.auth-header{
+    font-family: 'Cursive', 'Segoe Script', 'Comic Sans MS', sans-serif; 
+    line-height: 1.2;
+}
+
+.password-container {
+    position: relative;
+}
+  
+
+.password-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #777;
+}

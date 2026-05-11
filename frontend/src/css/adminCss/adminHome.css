@@ -1,0 +1,42 @@
+.recent-notification-box{
+    min-height: 580px;
+}
+
+.recent-notification-spinner{
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.recent-school-fees-box{
+    min-height: 380px;
+}
+
+.recent-school-fees-link{
+    position: absolute;
+    bottom: 10px;
+}
+
+.recent-staff-parent-box{
+    min-height: 360px;
+}
+
+.recent-email-box{
+    min-height: 440px;
+}
+
+.recent-student-box{
+    min-height: 730px;
+}
+
+.recent-assignment-submission-box{
+    min-height: 420px;
+}
+
+.recent-assignment-submission-spinner{
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

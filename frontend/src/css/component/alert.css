@@ -1,0 +1,37 @@
+.floating-alert {
+  position: fixed;
+  top: 20px; 
+  right: 20px; 
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 1.5s ease; 
+  z-index: 1000000; 
+  transform: translateX(700px);
+}
+
+.floating-alert.show {
+  opacity: 1; 
+  transform: translateX(0px);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+
+
+.success-alert{
+  background-color: #4caf50;
+}
+
+.failed-alert{
+  background-color: #c62e2e;
+}

@@ -1,0 +1,7 @@
+.staff-home-boxes {
+    transition: transform 0.3s ease; /* Smooth animation */
+  }
+
+.staff-home-boxes:hover{
+    transform: scale(1.04);
+}
