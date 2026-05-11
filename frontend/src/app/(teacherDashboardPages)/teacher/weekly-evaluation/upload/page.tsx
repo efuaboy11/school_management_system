@@ -3,7 +3,7 @@ import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
-import { Form, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation';
 import Select from 'react-select';
 
@@ -84,7 +84,7 @@ const UploadResultPage = () => {
     formData.append('student', studentID)
     formData.append('student_class', classID)
     formData.append('term', termID)
-    formData.append('session', sessionID),
+    formData.append('session', sessionID)
     formData.append('week_number', weekNumber)
 
     const response = await fetch(`https://school.amanilightequity.com/api/validate-student-evaluations/`, {

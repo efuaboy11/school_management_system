@@ -32,7 +32,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
   }
 
   interface bankType{
-    id: Number;
+    id: number;
     bank_name: string;
     account_number: string;
     account_name: string;
