@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 import AuthContext from "./AuthContext";
 import { ReactNode } from "react";
@@ -719,29 +719,30 @@ interface AllDataContextTye {
 const AllDataContext = createContext<AllDataContextTye | undefined>(undefined)
 export default AllDataContext
 
+const SECTION_ORDER = [
+  'general',
+  'pre_school',
+  'nursery',
+  'primary',
+  'junior_secondary',
+  'senior_secondary',
+  'others',
+] as const
+
+const SECTION_LABELS: Record<string, string> = {
+  general: 'General',
+  pre_school: 'Pre School',
+  nursery: 'Nursery',
+  primary: 'Primary',
+  junior_secondary: 'Junior Secondary',
+  senior_secondary: 'Senior Secondary',
+  others: 'Others',
+}
+
 export const AllDataProvider = ({ children }: { children: ReactNode }) => {
   const { authTokens } = useContext(AuthContext)!
 
-
-  const sectionOrder = [
-    'general',
-    'pre_school',
-    'nursery',
-    'primary',
-    'junior_secondary',
-    'senior_secondary',
-    'others',
-  ];
-
-  const sectionLabels: Record<string, string> = {
-    general: 'General',
-    pre_school: 'Pre School',
-    nursery: 'Nursery',
-    primary: 'Primary',
-    junior_secondary: 'Junior Secondary',
-    senior_secondary: 'Senior Secondary',
-    others: 'Others',
-  };
+  const sectionLabels = SECTION_LABELS
 
   const [studentQuery, setStudentQuery] = useState('')
   const [studentClassQuery, setStudentClassQuery] = useState('')
@@ -1020,7 +1021,7 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  const StudentFunction = async () => {
+  const StudentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/students/', {
       method: "GET",
       headers: {
@@ -1076,10 +1077,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterStudent = async () => {
+  const FilterStudent = useCallback(async () => {
     let url;
 
     if (studentSearch.length !== 0) {
@@ -1107,12 +1108,12 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setStudentData(sortedData)
     }
-  }
+  }, [authTokens, studentSearch])
 
 
 
   // Teacher
-  const TeacherFunction = async () => {
+  const TeacherFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/teachers/', {
       method: "GET",
       headers: {
@@ -1145,10 +1146,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterTeacher = async () => {
+  const FilterTeacher = useCallback(async () => {
     let url;
 
     if (teacherSearch.length !== 0) {
@@ -1176,10 +1177,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setTeacherData(sortedData)
     }
-  }
+  }, [authTokens, teacherSearch])
 
 
-  const ParentFunction = async () => {
+  const ParentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/parents/', {
       method: "GET",
       headers: {
@@ -1213,10 +1214,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterParent = async () => {
+  const FilterParent = useCallback(async () => {
     let url;
 
     if (parentSearch.length !== 0) {
@@ -1244,11 +1245,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
       setParentData(sortedData)
     }
-  }
+  }, [authTokens, parentSearch])
 
 
   // Staff
-  const StaffFunction = async () => {
+  const StaffFunction = useCallback(async () => {
     console.log('lpadign')
     const response = await fetch('https://school.amanilightequity.com/api/staff/', {
       method: "GET",
@@ -1283,10 +1284,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterStaff = async () => {
+  const FilterStaff = useCallback(async () => {
     let url;
 
     if (staffSearch.length !== 0) {
@@ -1314,11 +1315,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setStaffData(sortedData)
     }
-  }
+  }, [authTokens, staffSearch])
 
 
   // HR
-  const HrFunction = async () => {
+  const HrFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/hr/', {
       method: "GET",
       headers: {
@@ -1347,10 +1348,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterHr = async () => {
+  const FilterHr = useCallback(async () => {
     let url;
 
     if (hrSearch.length !== 0) {
@@ -1378,11 +1379,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setHrData(sortedData)
     }
-  }
+  }, [authTokens, hrSearch])
 
 
   // Bursary
-  const BursaryFunction = async () => {
+  const BursaryFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bursary/', {
       method: "GET",
       headers: {
@@ -1408,10 +1409,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterBursary = async () => {
+  const FilterBursary = useCallback(async () => {
     let url;
 
     if (bursarySearch.length !== 0) {
@@ -1439,10 +1440,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setBursaryData(sortedData)
     }
-  }
+  }, [authTokens, bursarySearch])
 
   // Store Keeper
-  const StoreKeeperFunction = async () => {
+  const StoreKeeperFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/store_keeper/', {
       method: "GET",
       headers: {
@@ -1468,10 +1469,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterStoreKeeper = async () => {
+  const FilterStoreKeeper = useCallback(async () => {
     let url;
 
     if (storeKeeperSearch.length !== 0) {
@@ -1499,10 +1500,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setStoreKeeperData(sortedData)
     }
-  }
+  }, [authTokens, storeKeeperSearch])
 
   // Exam Officer
-  const ResultOfficerFunction = async () => {
+  const ResultOfficerFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/result_officer/', {
       method: "GET",
       headers: {
@@ -1528,10 +1529,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterResultOfficer = async () => {
+  const FilterResultOfficer = useCallback(async () => {
     let url;
 
     if (resultOfficerSearch.length !== 0) {
@@ -1559,10 +1560,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setResultOfficerData(sortedData)
     }
-  }
+  }, [authTokens, resultOfficerSearch])
 
   // Academic Officer
-  const AcademicOfficerFunction = async () => {
+  const AcademicOfficerFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/academic-officer/', {
       method: "GET",
       headers: {
@@ -1588,10 +1589,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterAcademicOfficer = async () => {
+  const FilterAcademicOfficer = useCallback(async () => {
     let url;
 
     if (academicOfficerSearch.length !== 0) {
@@ -1619,10 +1620,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setAcademicOfficerData(sortedData)
     }
-  }
+  }, [authTokens, academicOfficerSearch])
 
   //  other Staff
-  const OtherStaffFunction = async () => {
+  const OtherStaffFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/other-staff/', {
       method: "GET",
       headers: {
@@ -1648,10 +1649,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterOtherStaff = async () => {
+  const FilterOtherStaff = useCallback(async () => {
     let url;
 
     if (otherStaffSearch.length !== 0) {
@@ -1679,10 +1680,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setOtherStaffData(sortedData)
     }
-  }
+  }, [authTokens, otherStaffSearch])
 
   // email
-  const EmailFunction = async () => {
+  const EmailFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/email/', {
       method: "GET",
       headers: {
@@ -1712,10 +1713,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterEmail = async () => {
+  const FilterEmail = useCallback(async () => {
     let url;
 
     if (emailSearch.length !== 0) {
@@ -1743,11 +1744,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setEmailData(sortedData)
     }
-  }
+  }, [authTokens, emailSearch])
 
 
   //subject
-  const SubjectFunction = async () => {
+  const SubjectFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/subjects/', {
       method: "GET",
       headers: {
@@ -1775,7 +1776,7 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
       const groupedBySection: Record<string, typeof data> = {};
 
-      sectionOrder.forEach(section => {
+      SECTION_ORDER.forEach(section => {
         groupedBySection[section] = sortedData.filter(
           subject => subject.sections === section
         );
@@ -1793,10 +1794,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterSubject = async () => {
+  const FilterSubject = useCallback(async () => {
     let url;
 
     if (subjectSearch.length !== 0) {
@@ -1824,7 +1825,7 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
       const groupedBySection: Record<string, typeof data> = {};
 
-      sectionOrder.forEach(section => {
+      SECTION_ORDER.forEach(section => {
         groupedBySection[section] = sortedData.filter(
           (subject: { sections: string }) => subject.sections === section
         );
@@ -1832,10 +1833,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       setSubjectGroupData(groupedBySection)
       setSubjectData(sortedData)
     }
-  }
+  }, [authTokens, subjectSearch])
 
   // Term
-  const TermFunction = async () => {
+  const TermFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/term/', {
       method: "GET",
       headers: {
@@ -1864,10 +1865,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterTerm = async () => {
+  const FilterTerm = useCallback(async () => {
     let url;
 
     if (termSearch.length !== 0) {
@@ -1895,10 +1896,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setTermData(sortedData)
     }
-  }
+  }, [authTokens, termSearch])
 
   // session
-  const SessionFunction = async () => {
+  const SessionFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/session/', {
       method: "GET",
       headers: {
@@ -1929,10 +1930,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterSession = async () => {
+  const FilterSession = useCallback(async () => {
     let url;
 
     if (sessionSearch.length !== 0) {
@@ -1960,12 +1961,12 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSessionData(sortedData)
     }
-  }
+  }, [authTokens, sessionSearch])
 
 
 
   // Student Class
-  const StudentClassFunction = async () => {
+  const StudentClassFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/student-class/', {
       method: "GET",
       headers: {
@@ -2000,10 +2001,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterStudentClass = async () => {
+  const FilterStudentClass = useCallback(async () => {
     let url;
 
     if (studentClassSearch.length !== 0) {
@@ -2031,11 +2032,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
       setStudentClassData(sortedData)
     }
-  }
+  }, [authTokens, studentClassSearch])
 
 
   // Admin or hr Notification
-  const AdminHrNotificationFunction = async () => {
+  const AdminHrNotificationFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/admin-or-hr-notification/?seen=${statusQuery}`, {
       method: "GET",
       headers: {
@@ -2066,10 +2067,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens, statusQuery])
 
 
-  const FilteradminHrNotification = async () => {
+  const FilteradminHrNotification = useCallback(async () => {
     let url;
 
     if (adminHrNotificationSearch.length !== 0) {
@@ -2097,10 +2098,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setAdminHrNotificationData(sortedData)
     }
-  }
+  }, [authTokens, adminHrNotificationSearch])
 
   //School Notification
-  const SchoolNotificationFunction = async () => {
+  const SchoolNotificationFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/school-notification/', {
       method: "GET",
       headers: {
@@ -2131,10 +2132,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterSchoolNotification = async () => {
+  const FilterSchoolNotification = useCallback(async () => {
     let url;
 
     if (schoolNotificationSearch.length !== 0) {
@@ -2162,10 +2163,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSchoolNotificationData(sortedData)
     }
-  }
+  }, [authTokens, schoolNotificationSearch])
 
   // class Notififcatiion
-  const ClassNotificationFunction = async () => {
+  const ClassNotificationFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/class-notification/', {
       method: "GET",
       headers: {
@@ -2196,10 +2197,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterClassNotification = async () => {
+  const FilterClassNotification = useCallback(async () => {
     let url;
 
     if (classNotificationSearch.length !== 0) {
@@ -2227,11 +2228,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setClassNotificationData(sortedData)
     }
-  }
+  }, [authTokens, classNotificationSearch])
 
 
   // staff Notification
-  const StaffNotificationFunction = async () => {
+  const StaffNotificationFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/staff-notification/', {
       method: "GET",
       headers: {
@@ -2262,10 +2263,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterStaffNotification = async () => {
+  const FilterStaffNotification = useCallback(async () => {
     let url;
 
     if (staffNotificationSearch.length !== 0) {
@@ -2293,11 +2294,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setStaffNotificationData(sortedData)
     }
-  }
+  }, [authTokens, staffNotificationSearch])
 
 
   // School Event
-  const SchoolEventFunction = async () => {
+  const SchoolEventFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/school-event/', {
       method: "GET",
       headers: {
@@ -2328,10 +2329,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterSchoolEvent = async () => {
+  const FilterSchoolEvent = useCallback(async () => {
     let url;
 
     if (schoolEventSearch.length !== 0) {
@@ -2359,11 +2360,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSchoolEventData(sortedData)
     }
-  }
+  }, [authTokens, schoolEventSearch])
 
 
   // Assignment
-  const AssignmentFunction = async () => {
+  const AssignmentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/assignment/', {
       method: "GET",
       headers: {
@@ -2394,10 +2395,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterAssignment = async () => {
+  const FilterAssignment = useCallback(async () => {
     let url;
 
     if (assignmentSearch.length !== 0) {
@@ -2425,11 +2426,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setAssignmentData(sortedData)
     }
-  }
+  }, [authTokens, assignmentSearch])
 
 
   // Asignment Submission
-  const AssignmentSubmissionFunction = async () => {
+  const AssignmentSubmissionFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/assignment-submission/', {
       method: "GET",
       headers: {
@@ -2460,10 +2461,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterAssignmentSubmission = async () => {
+  const FilterAssignmentSubmission = useCallback(async () => {
     let url;
 
     if (assignmentSubmissionSearch.length !== 0) {
@@ -2491,11 +2492,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setAssignmentSubmissionData(sortedData)
     }
-  }
+  }, [authTokens, assignmentSubmissionSearch])
 
 
   // Class Timetable
-  const ClassTimetableFunction = async () => {
+  const ClassTimetableFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/class-timetable/', {
       method: "GET",
       headers: {
@@ -2526,10 +2527,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterClassTimetable = async () => {
+  const FilterClassTimetable = useCallback(async () => {
     let url;
 
     if (classTimetableSearch.length !== 0) {
@@ -2557,13 +2558,13 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
       setClassTimetableData(sortedData)
     }
-  }
+  }, [authTokens, classTimetableSearch])
 
 
 
 
   // Class Timetable
-  const SchemeOFWorkFunction = async () => {
+  const SchemeOFWorkFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
@@ -2590,10 +2591,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens, studentClassQuery, termQuery, subjectQuery])
 
 
-  const FilterSchemeOFWork = async () => {
+  const FilterSchemeOFWork = useCallback(async () => {
     let url;
 
     if (schemeOfWorkSearch.length !== 0) {
@@ -2621,13 +2622,13 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSchemeOfWorkData(sortedData)
     }
-  }
+  }, [authTokens, schemeOfWorkSearch])
 
 
 
 
 
-  const ScratchCardFunction = async () => {
+  const ScratchCardFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/scratch-cards/?status=${statusQuery}`, {
       method: "GET",
       headers: {
@@ -2654,10 +2655,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens, statusQuery])
 
 
-  const FilterScratchCard = async () => {
+  const FilterScratchCard = useCallback(async () => {
     let url;
 
     if (scratchCardSearch.length !== 0) {
@@ -2685,12 +2686,12 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setScratchCardData(sortedData)
     }
-  }
+  }, [authTokens, scratchCardSearch])
 
 
   //E Result
 
-  const EResultFunction = async () => {
+  const EResultFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
       method: "GET",
       headers: {
@@ -2723,9 +2724,9 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens, studentQuery, studentClassQuery, termQuery, sessionQuery])
 
-  const FilterEResult = async () => {
+  const FilterEResult = useCallback(async () => {
     let url;
 
     if (eResultSearch.length !== 0) {
@@ -2755,10 +2756,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       );
       setEResultData(sortedData)
     }
-  }
+  }, [authTokens, eResultSearch])
 
   // Payment Mehthod
-  const PaymentMethodFunction = async () => {
+  const PaymentMethodFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/payment-method/', {
       method: "GET",
       headers: {
@@ -2789,10 +2790,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterPaymentMethod = async () => {
+  const FilterPaymentMethod = useCallback(async () => {
     let url;
 
     if (paymentMethodSearch.length !== 0) {
@@ -2820,11 +2821,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setPaymentMethodData(sortedData)
     }
-  }
+  }, [authTokens, paymentMethodSearch])
 
 
   // school fees
-  const SchoolFeesFunction = async () => {
+  const SchoolFeesFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
       method: "GET",
       headers: {
@@ -2853,10 +2854,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens, studentClassQuery, termQuery, sessionQuery, feeTypeQuery])
 
 
-  const FilterSchoolFees = async () => {
+  const FilterSchoolFees = useCallback(async () => {
     let url;
 
     if (schoolFeesSearch.length !== 0) {
@@ -2884,11 +2885,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
       setSchoolFeesData(sortedData)
     }
-  }
+  }, [authTokens, schoolFeesSearch])
 
 
   //All  School Fees Payment
-  const AllSchoolFeesPaymentFunction = async () => {
+  const AllSchoolFeesPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/payment-school-fees/', {
       method: "GET",
       headers: {
@@ -2921,10 +2922,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterAllSchoolFeesPayment = async () => {
+  const FilterAllSchoolFeesPayment = useCallback(async () => {
     let url;
 
     if (allSchoolFeesPaymentSearch.length !== 0) {
@@ -2952,10 +2953,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setAllSchoolFeesPaymentData(sortedData)
     }
-  }
+  }, [authTokens, allSchoolFeesPaymentSearch])
 
   //pending  School Fees Payment
-  const PendingSchoolFeesPaymentFunction = async () => {
+  const PendingSchoolFeesPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/payment-school-fees/pending/', {
       method: "GET",
       headers: {
@@ -2988,10 +2989,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterPendingSchoolFeesPayment = async () => {
+  const FilterPendingSchoolFeesPayment = useCallback(async () => {
     let url;
 
     if (pendingSchoolFeesPaymentSearch.length !== 0) {
@@ -3019,10 +3020,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setPendingSchoolFeesPaymentData(sortedData)
     }
-  }
+  }, [authTokens, pendingSchoolFeesPaymentSearch])
 
   // success school Fees payment
-  const SucessSchoolFeesPaymentFunction = async () => {
+  const SucessSchoolFeesPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/payment-school-fees/approved/', {
       method: "GET",
       headers: {
@@ -3055,10 +3056,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterSucessSchoolFeesPayment = async () => {
+  const FilterSucessSchoolFeesPayment = useCallback(async () => {
     let url;
 
     if (sucessSchoolFeesPaymentSearch.length !== 0) {
@@ -3086,10 +3087,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSucessSchoolFeesPaymentData(sortedData)
     }
-  }
+  }, [authTokens, sucessSchoolFeesPaymentSearch])
 
   // declined school Fees payment
-  const DeclinedSchoolFeesPaymentFunction = async () => {
+  const DeclinedSchoolFeesPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/payment-school-fees/declined/', {
       method: "GET",
       headers: {
@@ -3122,10 +3123,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterDeclinedSchoolFeesPayment = async () => {
+  const FilterDeclinedSchoolFeesPayment = useCallback(async () => {
     let url;
 
     if (declinedSchoolFeesPaymentSearch.length !== 0) {
@@ -3153,11 +3154,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setDeclinedSchoolFeesPaymentData(sortedData)
     }
-  }
+  }, [authTokens, declinedSchoolFeesPaymentSearch])
 
 
   // bills
-  const BillsFunction = async () => {
+  const BillsFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bills/', {
       method: "GET",
       headers: {
@@ -3188,10 +3189,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterBills = async () => {
+  const FilterBills = useCallback(async () => {
     let url;
 
     if (billsSearch.length !== 0) {
@@ -3219,9 +3220,9 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setBillsData(sortedData)
     }
-  }
+  }, [authTokens, billsSearch])
 
-  const BillsPaymentFunction = async () => {
+  const BillsPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bills-payment/', {
       method: "GET",
       headers: {
@@ -3248,9 +3249,9 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       setBillsPaymentLoader(false)
 
     }
-  }
+  }, [authTokens])
 
-  const FilterBillsPayment = async () => {
+  const FilterBillsPayment = useCallback(async () => {
     let url;
 
     if (billsPaymentSearch.length !== 0) {
@@ -3276,11 +3277,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setBillsPaymentData(sortedData)
     }
-  }
+  }, [authTokens, billsPaymentSearch])
 
 
   // pending Bills
-  const PendingBillsPaymentFunction = async () => {
+  const PendingBillsPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bills-payment/pending/', {
       method: "GET",
       headers: {
@@ -3313,10 +3314,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterPendingBillsPayment = async () => {
+  const FilterPendingBillsPayment = useCallback(async () => {
     let url;
 
     if (pendingBillsPaymentSearch.length !== 0) {
@@ -3344,11 +3345,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setPendingBillsPaymentData(sortedData)
     }
-  }
+  }, [authTokens, pendingBillsPaymentSearch])
 
 
   // success Bills
-  const SucessBillsPaymentFunction = async () => {
+  const SucessBillsPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bills-payment/approved/', {
       method: "GET",
       headers: {
@@ -3382,10 +3383,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterSucessBillsPayment = async () => {
+  const FilterSucessBillsPayment = useCallback(async () => {
     let url;
 
     if (sucessBillsPaymentSearch.length !== 0) {
@@ -3413,10 +3414,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSucessBillsPaymentData(sortedData)
     }
-  }
+  }, [authTokens, sucessBillsPaymentSearch])
 
   // declined Bills'
-  const DeclinedBillsPaymentFunction = async () => {
+  const DeclinedBillsPaymentFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bills-payment/declined/', {
       method: "GET",
       headers: {
@@ -3449,11 +3450,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
   // Bank Account'
-  const BankAccountFunction = async () => {
+  const BankAccountFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/bank-account/', {
       method: "GET",
       headers: {
@@ -3484,10 +3485,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterBankAccount = async () => {
+  const FilterBankAccount = useCallback(async () => {
     let url;
 
     if (bankAccountSearch.length !== 0) {
@@ -3516,10 +3517,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       );
       setBankAccountData(sortedData)
     }
-  }
+  }, [authTokens, bankAccountSearch])
 
 
-  const FilterDeclinedBillsPayment = async () => {
+  const FilterDeclinedBillsPayment = useCallback(async () => {
     let url;
 
     if (declinedBillsPaymentSearch.length !== 0) {
@@ -3547,11 +3548,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setDeclinedBillsPaymentData(sortedData)
     }
-  }
+  }, [authTokens, declinedBillsPaymentSearch])
 
 
   //product categories
-  const ProductCatergoriesFunction = async () => {
+  const ProductCatergoriesFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/product-categories/`, {
       method: "GET",
       headers: {
@@ -3580,10 +3581,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterProductCatergories = async () => {
+  const FilterProductCatergories = useCallback(async () => {
     let url;
 
     if (productCatergoriesSearch.length !== 0) {
@@ -3611,11 +3612,11 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setProductCatergoriesData(sortedData)
     }
-  }
+  }, [authTokens, productCatergoriesSearch])
 
 
   // product
-  const ProductFunction = async () => {
+  const ProductFunction = useCallback(async () => {
     const response = await fetch(`https://school.amanilightequity.com/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
       method: "GET",
       headers: {
@@ -3646,10 +3647,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens, productCategoriesQuery, statusQuery])
 
 
-  const FilterProduct = async () => {
+  const FilterProduct = useCallback(async () => {
     let url;
 
     if (productSearch.length !== 0) {
@@ -3677,10 +3678,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setProductData(sortedData)
     }
-  }
+  }, [authTokens, productSearch])
 
   // favourite product
-  const FavouriteProductFunction = async () => {
+  const FavouriteProductFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/favorite-products/', {
       method: "GET",
       headers: {
@@ -3711,10 +3712,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterFavouriteProduct = async () => {
+  const FilterFavouriteProduct = useCallback(async () => {
     let url;
 
     if (favouriteProductSearch.length !== 0) {
@@ -3742,10 +3743,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setFavouriteProductData(sortedData)
     }
-  }
+  }, [authTokens, favouriteProductSearch])
 
   // order product
-  const OrderProductFunction = async () => {
+  const OrderProductFunction = useCallback(async () => {
     const response = await fetch('https://school.amanilightequity.com/api/order-products/', {
       method: "GET",
       headers: {
@@ -3776,10 +3777,10 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  }
+  }, [authTokens])
 
 
-  const FilterOrderProduct = async () => {
+  const FilterOrderProduct = useCallback(async () => {
     let url;
 
     if (orderProductSearch.length !== 0) {
@@ -3807,7 +3808,7 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setOrderProductData(sortedData)
     }
-  }
+  }, [authTokens, orderProductSearch])
 
 
 
