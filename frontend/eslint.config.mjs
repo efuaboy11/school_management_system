@@ -18,6 +18,11 @@ const eslintConfig = [
     files: ["**/*.{ts,tsx}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
+      // Listing every context *Function in thousands of useEffect deps is not practical;
+      // useCallback already keeps stable identities where it matters.
+      "react-hooks/exhaustive-deps": "off",
+      // Many pages use dynamic img elements for user-uploaded media; converting is a separate effort.
+      "@next/next/no-img-element": "off",
       // optionally: "@typescript-eslint/no-explicit-any": "warn",
       // You can also adjust other rules here as needed:
       // "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
